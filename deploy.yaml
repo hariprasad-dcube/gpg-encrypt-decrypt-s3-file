@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template GnuPG - Encryption and Decryption Compiler for S3 Data
+Globals:
+  Function:
+    MemorySize: 128
+    Timeout: 60
+Resources:
+  S3FilePGPDecryptionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: S3FilePGPDecryption
+      Description: Layers App Decrypt File with PGP
+      CodeUri: s3://freshers-training/lambda-layer-code/41cd765d485f58254804a70c173ff692
+      Handler: main.lambda_handler
+      Runtime: python3.9
+      Role: arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh
+      Environment:
+        Variables:
+          DEST_BUCKET: freshers-training
+          DEST_PREFIX: pgp/decrypted
+          CRYPT_FILE_SUFFIX: .pgp
+          PROCESS_ZERO_FILE_SIZE: true
+          SEC_KEY_PATH: s3://freshers-training/pgp/private-key/gpg_keys/sec.key
+          PASSPHRASE: dcube@2022
+      Layers:
+      - Ref: PGPBinaryLibLambdaLayer
+    Metadata:
+      SamResourceId: S3FilePGPDecryptionFunction
+  S3FilePGPEncryptionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: S3FilePGPEncryption
+      Description: Layers App Encrypt File with PGP
+      CodeUri: s3://freshers-training/lambda-layer-code/15156b200feaadcb23997db06d4dd7ce
+      Handler: main.lambda_handler
+      Runtime: python3.9
+      Role: arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh
+      Environment:
+        Variables:
+          DEST_BUCKET: freshers-training
+          DEST_PREFIX: pgp/encrypted
+          CRYPT_FILE_SUFFIX: .pgp
+          PROCESS_ZERO_FILE_SIZE: true
+          PUB_KEY_PATH: s3://freshers-training/pgp/private-key/gpg_keys/pub.key
+          RECIPIENTS: dcube_latest@dcube.com
+      Layers:
+      - Ref: PGPBinaryLibLambdaLayer
+    Metadata:
+      SamResourceId: S3FilePGPEncryptionFunction
+  PGPBinaryLibLambdaLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: PGPBinaryLibraries
+      Description: PGP Encryption and Decryption Dependency Libraries Lambda Layer
+      ContentUri: s3://freshers-training/lambda-layer-code/f05fce59aa143236e6e6ae762579c867
+      CompatibleRuntimes:
+      - python3.9
+      - python3.8
+      - python3.7
+      LicenseInfo: null
+      RetentionPolicy: Retain
+    Metadata:
+      SamResourceId: PGPBinaryLibLambdaLayer
+Outputs:
+  MyLambdaLayerARN:
+    Value:
+      Ref: PGPBinaryLibLambdaLayer
+    Description: PGPBinaryLibLambdaLayer ARN
+    Export:
+      Name: pgp-binary-lib-lambda-layer-arn

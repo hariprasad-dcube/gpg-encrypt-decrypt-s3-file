@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for Layers-Demo Application
+Globals:
+  Function:
+    Timeout: 60
+Resources:
+  S3FilePGPDecryptionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: LayersApp-PGPDecryption
+      Description: Layers App Decrypt File with PGP
+      Role: arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh
+      CodeUri: s3://freshers-training/lambda-layer-code/1792daa4beda03437d9835adc7357d75
+      Handler: main.lambda_handler
+      Runtime: python3.9
+      Layers:
+      - Ref: MyLambdaLayer
+    Metadata:
+      SamResourceId: S3FilePGPDecryptionFunction
+  S3FilePGPEncryptionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: LayersApp-PGPEncryption
+      Description: Layers App Encrypt File with PGP
+      Role: arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh
+      CodeUri: s3://freshers-training/lambda-layer-code/271fa12fe5b1b2d5fc3234a9f5d59326
+      Handler: main.lambda_handler
+      Runtime: python3.9
+      Layers:
+      - Ref: MyLambdaLayer
+    Metadata:
+      SamResourceId: S3FilePGPEncryptionFunction
+  MyLambdaLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: MyLambdaLayer
+      Description: My Lambda Layer with PGP Encryption and Decryption Module for s3
+        files
+      ContentUri: s3://freshers-training/lambda-layer-code/b9a84cdf5e6decb03ed7a0d5f6f0e380
+      CompatibleRuntimes:
+      - python3.9
+      LicenseInfo: MIT
+      RetentionPolicy: Retain
+    Metadata:
+      SamResourceId: MyLambdaLayer
+Outputs:
+  MyLambdaLayerARN:
+    Value:
+      Ref: MyLambdaLayer
+    Description: MyLambdaLayer ARN
+    Export:
+      Name: my-lambda-layer-arn

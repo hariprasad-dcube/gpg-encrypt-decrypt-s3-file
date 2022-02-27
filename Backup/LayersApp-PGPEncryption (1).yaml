@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Layers App Encrypt File with PGP
+Resources:
+  LayersAppPGPEncryption:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: main.lambda_handler
+      Runtime: python3.9
+      CodeUri: .
+      Description: Layers App Encrypt File with PGP
+      MemorySize: 128
+      Timeout: 60
+      Role: 'arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh'
+      Events:
+        BucketEvent1:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: Bucket1
+            Events:
+              - 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: pgp/data/
+                  - Name: suffix
+                    Value: .txt
+      Environment:
+        Variables:
+          SRC_BUCKET: my-test
+      Tags:
+        'lambda:createdBy': SAM
+      Layers:
+        - 'arn:aws:lambda:us-west-1:058682646398:layer:MyLambdaLayer:16'
+  Bucket1:
+    Type: 'AWS::S3::Bucket'

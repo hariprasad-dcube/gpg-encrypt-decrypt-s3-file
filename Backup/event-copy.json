@@ -1,0 +1,38 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-west-1",
+            "eventTime": "2022-02-26T22:02:25.133Z",
+            "eventName": "ObjectCreated:Copy",
+            "userIdentity": {
+                "principalId": "AWS:AIDAQ3KOCD57CBNGKBDUA"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "165.225.122.248"
+            },
+            "responseElements": {
+                "x-amz-request-id": "YX32D24DVWC15PTK",
+                "x-amz-id-2": "AunbdWb8bNowtucqpRhEYoygGBw5NQpW9pItUHinleAwl3AQUE3WtHkBL6iVMlSGikjC2E1wUmYRJvl96cZ3xSqRFShdsmHs"
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "a3ff9b20-44a2-4b49-aaff-a561a88444ba",
+                "bucket": {
+                    "name": "freshers-training",
+                    "ownerIdentity": {
+                        "principalId": "A1WBNS58I3XWYJ"
+                    },
+                    "arn": "arn:aws:s3:::freshers-training"
+                },
+                "object": {
+                    "key": "pgp/data/test%281%29.txt",
+                    "size": 0,
+                    "eTag": "5812b5863b28fb7a223ddeb860e0b372",
+                    "sequencer": "00621AA37119EB39EB"
+                }
+            }
+        }
+    ]
+}
