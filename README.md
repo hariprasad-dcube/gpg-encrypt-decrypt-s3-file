@@ -1,4 +1,4 @@
-# PGPEncryptDecryptForS3File
+# PGP Encrypt Decrypt For S3 File with Lambda
 GnuPG with AWS Lambda - To Encrypt and Decrypt S3 File 
 
 ## Gnup Setup
