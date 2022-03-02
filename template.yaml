@@ -7,23 +7,23 @@ Globals:
     Timeout: 60
 
 Resources:
-  S3FilePGPDecryptionFunction:
+  S3FileGPGDecryptionFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: S3FilePGPDecryption
-      Description: Layers App Decrypt File with PGP
-      CodeUri: pgp-decryption/
+      FunctionName: S3FileGPGDecryption
+      Description: Layers App Decrypt File with GPG
+      CodeUri: gpg-decryption/
       Handler: main.lambda_handler
       Runtime: python3.9
-      Role: arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh
+      Role: arn:aws:iam::058682646398:role/service-role/gpg-decryption-role-or8p50fh
       Environment:
         Variables:
           DEST_BUCKET: freshers-training
-          DEST_PREFIX: pgp/decrypted
+          DEST_PREFIX: gpg/decrypted
           # CRYPT_FILE_PREFIX: 
-          CRYPT_FILE_SUFFIX: .pgp
+          CRYPT_FILE_SUFFIX: .gpg
           PROCESS_ZERO_FILE_SIZE: True
-          SEC_KEY_PATH: s3://freshers-training/pgp/private-key/gpg_keys/sec.key
+          SEC_KEY_PATH: s3://freshers-training/gpg/private-key/gpg_keys/sec.key
           PASSPHRASE: dcube@2022
       # Events:
       #   BucketEvent1:
@@ -36,38 +36,38 @@ Resources:
       #         S3Key:
       #           Rules:
       #             - Name: prefix
-      #               Value: pgp/data/
+      #               Value: gpg/data/
       #             - Name: suffix
       #               Value: .txt
       Layers:
-        - !Ref PGPBinaryLibLambdaLayer
+        - !Ref GPGBinaryLibLambdaLayer
 
-  S3FilePGPEncryptionFunction:
+  S3FileGPGEncryptionFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: S3FilePGPEncryption
-      Description: Layers App Encrypt File with PGP
-      CodeUri: pgp-encryption/
+      FunctionName: S3FileGPGEncryption
+      Description: Layers App Encrypt File with GPG
+      CodeUri: gpg-encryption/
       Handler: main.lambda_handler
       Runtime: python3.9
-      Role: arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh
+      Role: arn:aws:iam::058682646398:role/service-role/gpg-decryption-role-or8p50fh
       Environment:
         Variables:
           DEST_BUCKET: freshers-training
-          DEST_PREFIX: pgp/encrypted
+          DEST_PREFIX: gpg/encrypted
           # CRYPT_FILE_PREFIX: 
-          CRYPT_FILE_SUFFIX: .pgp
+          CRYPT_FILE_SUFFIX: .gpg
           PROCESS_ZERO_FILE_SIZE: True
-          PUB_KEY_PATH: s3://freshers-training/pgp/private-key/gpg_keys/pub.key
+          PUB_KEY_PATH: s3://freshers-training/gpg/private-key/gpg_keys/pub.key
           RECIPIENTS: dcube_latest@dcube.com
       Layers:
-        - !Ref PGPBinaryLibLambdaLayer
+        - !Ref GPGBinaryLibLambdaLayer
 
-  PGPBinaryLibLambdaLayer:
+  GPGBinaryLibLambdaLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: PGPBinaryLibraries
-      Description: PGP Encryption and Decryption Dependency Libraries Lambda Layer
+      LayerName: GPGBinaryLibraries
+      Description: GPG Encryption and Decryption Dependency Libraries Lambda Layer
       ContentUri: gnugp-binary-libs/gnugp-binary-libs.zip
       CompatibleRuntimes:
         - python3.9
@@ -88,7 +88,7 @@ Resources:
 
 Outputs:
   MyLambdaLayerARN:
-    Value: !Ref PGPBinaryLibLambdaLayer
-    Description: PGPBinaryLibLambdaLayer ARN
+    Value: !Ref GPGBinaryLibLambdaLayer
+    Description: GPGBinaryLibLambdaLayer ARN
     Export:
-      Name: pgp-binary-lib-lambda-layer-arn
+      Name: gpg-binary-lib-lambda-layer-arn

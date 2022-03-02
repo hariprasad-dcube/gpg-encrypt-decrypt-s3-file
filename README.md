@@ -1,4 +1,4 @@
-# PGP Encrypt Decrypt For S3 File with Lambda
+# GPG Encrypt Decrypt For S3 File with Lambda
 GnuPG with AWS Lambda - To Encrypt and Decrypt S3 File 
 
 ## Gnup Setup
@@ -48,5 +48,5 @@ GnuPG with AWS Lambda - To Encrypt and Decrypt S3 File
 
     ##### Deploy the Code to CloudFormation
     ```bash
-    sam deploy --template-file deploy.yaml --stack-name PGPEncryptDecryptForS3File
+    sam deploy --template-file deploy.yaml --stack-name GPGEncryptDecryptForS3File
     ```

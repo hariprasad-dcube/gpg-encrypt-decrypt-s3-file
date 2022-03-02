@@ -1,14 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
-Description: Layers App Encrypt File with PGP
+Description: Layers App Encrypt File with GPG
 Resources:
-  LayersAppPGPEncryption:
+  LayersAppGPGEncryption:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: main.lambda_handler
       Runtime: python3.9
       CodeUri: .
-      Description: Layers App Encrypt File with PGP
+      Description: Layers App Encrypt File with GPG
       MemorySize: 128
       Timeout: 60
       Role: 'arn:aws:iam::058682646398:role/service-role/pgp-decryption-role-or8p50fh'

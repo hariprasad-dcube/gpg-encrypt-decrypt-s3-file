@@ -40,7 +40,7 @@ def lambda_handler(event, context):
     gpg = gnupg.GPG(gnupghome="/tmp", gpgbinary="/opt/bin/gpg")
 
 
-    # Import Secret Key to PGP
+    # Import Public Key to GPG
     pub_key = s3_client.get_object(
         Bucket=PUB_KEY_BUCKET,
         Key=PUB_KEY_PREFIX)["Body"].read()
