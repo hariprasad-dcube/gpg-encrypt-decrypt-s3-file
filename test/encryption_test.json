@@ -1,0 +1,15 @@
+{
+    "Records": [
+        {
+            "s3": {
+                "bucket": {
+                    "name": "freshers-training"
+                },
+                "object": {
+                    "key": "gpg/decrypted/test.txt",
+                    "size": 1024
+                }
+            }
+        }
+    ]
+}
